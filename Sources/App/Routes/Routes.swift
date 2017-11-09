@@ -32,7 +32,7 @@ extension Droplet {
                     throw Abort.badRequest
             }
             
-            let place = Place(name: namme, address: address, zipCode: zipInt, latitude: latDouble, longitude: lonDouble)
+            let place = Place(name: name, address: address, zipCode: zipInt, latitude: latDouble, longitude: lonDouble)
             try place.save()
             
             return "Success!"
