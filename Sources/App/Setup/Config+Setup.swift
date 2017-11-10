@@ -21,6 +21,5 @@ extension Config {
     /// schemas prepared before the app boots
     private func setupPreparations() throws {
         preparations.append(Place.self)
-        preparations.append(Post.self)
     }
 }

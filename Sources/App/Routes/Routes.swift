@@ -37,6 +37,5 @@ extension Droplet {
             
             return "Success!"
         }
-        try resource("posts", PostController.self)
     }
 }
