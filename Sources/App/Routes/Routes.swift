@@ -18,7 +18,7 @@ extension Droplet {
             return req.description
         }
 
-        get("place", String.parameter) { request in
+        get("nearbyPlaces", String.parameter) { request in
             let parameter = try request.parameters.next(String.self)
 
             let allPlaces = try Place.all().filter{ $0.zipCode == parameter }
