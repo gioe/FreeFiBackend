@@ -12,12 +12,12 @@ final class Place: Model {
     let storage = Storage()
     let name: String
     let address: String
-    let zipCode: Int
-    let latitude: Double
-    let longitude: Double
+    let zipCode: String
+    let latitude: String
+    let longitude: String
     
     /// Creates a new State
-    init(name: String, address: String, zipCode: Int, latitude: Double, longitude: Double) {
+    init(name: String, address: String, zipCode: String, latitude: String, longitude: String) {
         self.name = name
         self.address = address
         self.zipCode = zipCode
@@ -38,10 +38,10 @@ final class Place: Model {
     func makeRow() throws -> Row {
         var row = Row()
         try row.set("name", name)
-        try row.set("name", address)
-        try row.set("name", zipCode)
-        try row.set("name", latitude)
-        try row.set("name", longitude)
+        try row.set("address", address)
+        try row.set("zipCode", zipCode)
+        try row.set("latitude", latitude)
+        try row.set("longitude", longitude)
         return row
     }
 }
