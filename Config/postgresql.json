@@ -1,6 +1,7 @@
 {
-    "hostname": "$DATABASE_HOSTNAME",
-    "user": "$DATABASE_USER",
-    "password": "$DATABASE_PASSWORD",
-    "database": "$DATABASE_DB"
+    "hostname": "127.0.0.1",
+    "user": "mattgioe",
+    "password": "",
+    "database": "mattgioe",
+    "port": 5555
 }

@@ -16,6 +16,11 @@ final class Place: Model {
     let latitude: String
     let longitude: String
     
+    func networks() throws -> [Network] {
+        let networks: Siblings<Place, Network, Pivot<Place, Network>> = siblings()
+        return try networks.all()
+    }
+    
     /// Creates a new State
     init(name: String, address: String, zipCode: String, latitude: String, longitude: String) {
         self.name = name
@@ -44,6 +49,7 @@ final class Place: Model {
         try row.set("longitude", longitude)
         return row
     }
+    
 }
 
 // MARK: Fluent Preparation

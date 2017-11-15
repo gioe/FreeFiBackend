@@ -21,5 +21,8 @@ extension Config {
     /// schemas prepared before the app boots
     private func setupPreparations() throws {
         preparations.append(Place.self)
+        preparations.append(Network.self)
+        preparations.append(Pivot<Place, Network>.self)
     }
+    
 }
