@@ -23,18 +23,24 @@ extension Droplet {
             let parameter = try request.parameters.next(String.self)
 
             let allPlaces = try Place.all().filter{ $0.zipCode == parameter }
+           
+            var responseJSON = JSON()
+            var jsonArray: [JSON] = []
             
             try allPlaces.forEach {
                 var placeJSON = try $0.makeJSON()
                 let networks = try $0.networks().makeJSON()
                 placeJSON["networks"] = networks
+                jsonArray.append(placeJSON)
             }
+        
+            try responseJSON.set("data", jsonArray)
             
-            return "success"
+            return responseJSON
         }
         
         post("place", "new") { (request) -> ResponseRepresentable in
-            
+
             guard let name = request.data["name"]?.string,
                   let address = request.data["address"]?.string,
                   let zipCode = request.data["zipCode"]?.string,
@@ -48,10 +54,14 @@ extension Droplet {
 
             if let networks = request.data["networks"]?.array {
                 try networks.forEach {
+                    
                     guard let name = $0["name"]?.string, let password = $0["password"]?.string else {
                         return
                     }
+                    
                     let network = Network(name: name, password: password)
+                    try network.save()
+                    
                     let networkPivot = try Pivot<Place, Network>(place, network)
                     try networkPivot.save()
                     
