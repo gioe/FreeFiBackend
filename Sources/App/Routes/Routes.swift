@@ -46,7 +46,7 @@ extension Droplet {
                   let zipCode = request.data["zipCode"]?.string,
                   let latitude = request.data["latitude"]?.string,
                   let longitude = request.data["longitude"]?.string else {
-                    throw Abort.badRequest
+                    return Response(status: .badRequest)
             }
             
             let place = Place(name: name, address: address, zipCode: zipCode, latitude: latitude, longitude: longitude)
