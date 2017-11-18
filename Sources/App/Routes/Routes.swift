@@ -20,7 +20,7 @@ extension Droplet {
         }
        
         get("nearbyPlaces", String.parameter) { request in
-            let parameter = try request.parameters.next(String.self)
+            let parameter = try request.parameters.next(Int.self)
 
             let allPlaces = try Place.all().filter{ $0.zipCode == parameter }
            
@@ -43,9 +43,9 @@ extension Droplet {
 
             guard let name = request.data["name"]?.string,
                   let address = request.data["address"]?.string,
-                  let zipCode = request.data["zipCode"]?.string,
-                  let latitude = request.data["latitude"]?.string,
-                  let longitude = request.data["longitude"]?.string else {
+                  let zipCode = request.data["zipCode"]?.int,
+                  let latitude = request.data["latitude"]?.double,
+                  let longitude = request.data["longitude"]?.double else {
                     return Response(status: .badRequest)
             }
             

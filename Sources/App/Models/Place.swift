@@ -12,9 +12,9 @@ final class Place: Model {
     let storage = Storage()
     let name: String
     let address: String
-    let zipCode: String
-    let latitude: String
-    let longitude: String
+    let zipCode: Int
+    let latitude: Double
+    let longitude: Double
     
     func networks() throws -> [Network] {
         let networks: Siblings<Place, Network, Pivot<Place, Network>> = siblings()
@@ -22,7 +22,7 @@ final class Place: Model {
     }
     
     /// Creates a new State
-    init(name: String, address: String, zipCode: String, latitude: String, longitude: String) {
+    init(name: String, address: String, zipCode: Int, latitude: Double, longitude: Double) {
         self.name = name
         self.address = address
         self.zipCode = zipCode
@@ -61,9 +61,9 @@ extension Place: Preparation {
             builder.id()
             builder.string("name")
             builder.string("address")
-            builder.string("zipCode")
-            builder.string("latitude")
-            builder.string("longitude")
+            builder.int("zipCode")
+            builder.double("latitude")
+            builder.double("longitude")
         }
     }
     
