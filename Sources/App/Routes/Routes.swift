@@ -41,55 +41,35 @@ extension Droplet {
         
         post("place", "new") { (request) -> ResponseRepresentable in
             
-            guard let bytes = request.body.bytes else {
-                return try Response(status: .badRequest, json: ["message" : "No bytes"])
+            guard let bytes = request.body.bytes, let json = try? JSON(bytes: bytes) else {
+                return try Response(status: .badRequest, json: ["message": "Error creating JSON"])
             }
+            
+            guard let name = json["name"]?.string, let address = json["address"]?.string, let zipCode = json["zipCode"]?.int, let latitude = json["latitude"]?.double, let longitude = json["longitude"]?.double else {
+                return try Response(status: .badRequest, json: ["message": "Couldn't produce a place. One of the variables was busted"])
+            }
+            
+            let place = Place(name: name, address: address, zipCode: zipCode, latitude: latitude, longitude: longitude)
+            try place.save()
 
-            let json = try JSON(bytes: bytes)
-            print("Got JSON: \(json)")
-            
-            guard let name = json["name"]?.string else {
-                return try Response(status: .badRequest, json: ["message" : "Couldn't produce a name"])
+            if let networks = json["networks"]?.array {
+                try networks.forEach {
+
+                    guard let name = $0["name"]?.string, let password = $0["password"]?.string else {
+                        return
+                    }
+
+                    let network = Network(name: name, password: password)
+                    try network.save()
+
+                    let networkPivot = try Pivot<Place, Network>(place, network)
+                    try networkPivot.save()
+
+                    try place.save()
+
+                }
             }
-            
-            guard let address = json["address"]?.string else {
-                return try Response(status: .badRequest, json: ["message" : "Couldn't produce an address"])
-            }
-            
-            guard let zipCode = json["zipCode"]?.int else {
-                return try Response(status: .badRequest, json: ["message" : "Couldn't produce a zipcode"])
-            }
-            
-            guard let latitude = json["latitude"]?.double else {
-                return try Response(status: .badRequest, json: ["message" : "Couldn't produce a latitude"])
-            }
-            
-            guard let longitude = json["longitude"]?.double else {
-                return try Response(status: .badRequest, json: ["message" : "Couldn't produce a longitude"])
-            }
-            
-//            let place = Place(name: name, address: address, zipCode: zipCode, latitude: latitude, longitude: longitude)
-//            try place.save()
-//
-//            if let networks = request.data["networks"]?.array {
-//                try networks.forEach {
-//
-//                    guard let name = $0["name"]?.string, let password = $0["password"]?.string else {
-//                        return
-//                    }
-//
-//                    let network = Network(name: name, password: password)
-//                    try network.save()
-//
-//                    let networkPivot = try Pivot<Place, Network>(place, network)
-//                    try networkPivot.save()
-//
-//                    try place.save()
-//
-//                }
-//            }
-//
-            return try Response(status: .accepted, json: ["message" : "Success"])
+            return try Response(status: .accepted, json: ["message": "Success"])
         }
     }
 }
