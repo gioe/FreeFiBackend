@@ -41,12 +41,30 @@ extension Droplet {
         
         post("place", "new") { (request) -> ResponseRepresentable in
 
-            guard let name = request.data["name"]?.string,
-                  let address = request.data["address"]?.string,
-                  let zipCode = request.data["zipCode"]?.int,
-                  let latitude = request.data["latitude"]?.double,
-                  let longitude = request.data["longitude"]?.double else {
-                    return Response(status: .badRequest)
+            guard let name = request.data["name"]?.string else {
+                self.log.info("Couldn't produce a name")
+                return Response(status: .badRequest)
+            }
+            
+            guard let address = request.data["address"]?.string else {
+                self.log.info("Couldn't produce an address")
+                return Response(status: .badRequest)
+            }
+            
+            guard let zipCode = request.data["zipCode"]?.int else {
+                self.log.info("Couldn't produce an zipCode")
+                return Response(status: .badRequest)
+            }
+            
+            guard let latitude = request.data["latitude"]?.double else {
+                self.log.info("Couldn't produce an latitude")
+                return Response(status: .badRequest)
+            }
+            
+            guard let longitude = request.data["longitude"]?.double else {
+                self.log.info("Couldn't produce an longitude")
+                return Response(status: .badRequest)
+                
             }
             
             let place = Place(name: name, address: address, zipCode: zipCode, latitude: latitude, longitude: longitude)
