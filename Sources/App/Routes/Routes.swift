@@ -42,23 +42,23 @@ extension Droplet {
         post("place", "new") { (request) -> ResponseRepresentable in
 
             guard let name = request.data["name"]?.string else {
-                return ["message" : "Couldn't produce a name"]
+                return try Response(status: .badRequest, json: ["message" : "Couldn't produce a name"])
             }
             
             guard let address = request.data["address"]?.string else {
-                return ["message" : "Couldn't produce an address"]
+                return try Response(status: .badRequest, json: ["message" : "Couldn't produce an address"])
             }
             
             guard let zipCode = request.data["zipCode"]?.int else {
-                return ["message" : "Couldn't produce a zipcode"]
+                return try Response(status: .badRequest, json: ["message" : "Couldn't produce a zipcode"])
             }
             
             guard let latitude = request.data["latitude"]?.double else {
-                return ["message" : "Couldn't produce a latitude"]
+                return try Response(status: .badRequest, json: ["message" : "Couldn't produce a latitude"])
             }
             
             guard let longitude = request.data["longitude"]?.double else {
-                return ["message" : "Couldn't produce a longitude"]
+                return try Response(status: .badRequest, json: ["message" : "Couldn't produce a longitude"])
             }
             
 //            let place = Place(name: name, address: address, zipCode: zipCode, latitude: latitude, longitude: longitude)
@@ -82,7 +82,7 @@ extension Droplet {
 //                }
 //            }
 //
-            return ["message" : "Success"]
+            return try Response(status: .accepted, json: ["message" : "Success"])
         }
     }
 }
