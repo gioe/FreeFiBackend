@@ -42,53 +42,48 @@ extension Droplet {
         post("place", "new") { (request) -> ResponseRepresentable in
 
             guard let name = request.data["name"]?.string else {
-                self.log.warning("Couldn't produce a name")
-                return Response(status: .badRequest)
+                return "Couldn't produce a name"
             }
             
             guard let address = request.data["address"]?.string else {
-                self.log.warning("Couldn't produce an address")
-                return Response(status: .badRequest)
+                return "Couldn't produce an address"
             }
             
             guard let zipCode = request.data["zipCode"]?.int else {
-                self.log.warning("Couldn't produce an zipCode")
-                return Response(status: .badRequest)
+                return "Couldn't produce a zipCode"
             }
             
             guard let latitude = request.data["latitude"]?.double else {
-                self.log.warning("Couldn't produce an latitude")
-                return Response(status: .badRequest)
+                return "Couldn't produce a latitude"
             }
             
             guard let longitude = request.data["longitude"]?.double else {
-                self.log.warning("Couldn't produce an longitude")
-                return Response(status: .badRequest)
-                
+                return "Couldn't produce a longitude"
+
             }
             
-            let place = Place(name: name, address: address, zipCode: zipCode, latitude: latitude, longitude: longitude)
-            try place.save()
-
-            if let networks = request.data["networks"]?.array {
-                try networks.forEach {
-                    
-                    guard let name = $0["name"]?.string, let password = $0["password"]?.string else {
-                        return
-                    }
-                    
-                    let network = Network(name: name, password: password)
-                    try network.save()
-                    
-                    let networkPivot = try Pivot<Place, Network>(place, network)
-                    try networkPivot.save()
-                    
-                    try place.save()
-
-                }
-            }
-            
-            return "Success!"
-        }
+//            let place = Place(name: name, address: address, zipCode: zipCode, latitude: latitude, longitude: longitude)
+//            try place.save()
+//
+//            if let networks = request.data["networks"]?.array {
+//                try networks.forEach {
+//                    
+//                    guard let name = $0["name"]?.string, let password = $0["password"]?.string else {
+//                        return
+//                    }
+//                    
+//                    let network = Network(name: name, password: password)
+//                    try network.save()
+//                    
+//                    let networkPivot = try Pivot<Place, Network>(place, network)
+//                    try networkPivot.save()
+//                    
+//                    try place.save()
+//
+//                }
+//            }
+//            
+//            return "Success!"
+//        }
     }
 }
