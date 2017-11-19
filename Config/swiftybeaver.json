@@ -1,0 +1,15 @@
+[
+ {
+ "type": "console",
+ "format": " $Dyyyy-MM-dd HH:mm:ss.SSS$d $C$L$c: $M"
+ },
+ {
+ "type": "file"
+ },
+ {
+ "type": "platform",
+ "app": "53085q",
+ "secret": "rfpk6kcdaofrpzewhqs432VR9ro1vzfo,
+ "key": "HglKwS0tuflxijkwtuosB7tkoknSnhgs"
+ }
+ ]
