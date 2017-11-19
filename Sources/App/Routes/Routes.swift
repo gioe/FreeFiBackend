@@ -67,23 +67,23 @@ extension Droplet {
 //
 //            if let networks = request.data["networks"]?.array {
 //                try networks.forEach {
-//                    
+//
 //                    guard let name = $0["name"]?.string, let password = $0["password"]?.string else {
 //                        return
 //                    }
-//                    
+//
 //                    let network = Network(name: name, password: password)
 //                    try network.save()
-//                    
+//
 //                    let networkPivot = try Pivot<Place, Network>(place, network)
 //                    try networkPivot.save()
-//                    
+//
 //                    try place.save()
 //
 //                }
 //            }
-//            
-//            return "Success!"
-//        }
+//
+            return "Success!"
+        }
     }
 }
