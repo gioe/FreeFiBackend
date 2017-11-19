@@ -40,24 +40,31 @@ extension Droplet {
         }
         
         post("place", "new") { (request) -> ResponseRepresentable in
+            
+            guard let bytes = request.body.bytes else {
+                return try Response(status: .badRequest, json: ["message" : "No bytes"])
+            }
 
-            guard let name = request.data["name"]?.string else {
+            let json = try JSON(bytes: bytes)
+            print("Got JSON: \(json)")
+            
+            guard let name = json["name"]?.string else {
                 return try Response(status: .badRequest, json: ["message" : "Couldn't produce a name"])
             }
             
-            guard let address = request.data["address"]?.string else {
+            guard let address = json["address"]?.string else {
                 return try Response(status: .badRequest, json: ["message" : "Couldn't produce an address"])
             }
             
-            guard let zipCode = request.data["zipCode"]?.int else {
+            guard let zipCode = json["zipCode"]?.int else {
                 return try Response(status: .badRequest, json: ["message" : "Couldn't produce a zipcode"])
             }
             
-            guard let latitude = request.data["latitude"]?.double else {
+            guard let latitude = json["latitude"]?.double else {
                 return try Response(status: .badRequest, json: ["message" : "Couldn't produce a latitude"])
             }
             
-            guard let longitude = request.data["longitude"]?.double else {
+            guard let longitude = json["longitude"]?.double else {
                 return try Response(status: .badRequest, json: ["message" : "Couldn't produce a longitude"])
             }
             
