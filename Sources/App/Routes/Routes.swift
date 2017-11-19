@@ -42,27 +42,27 @@ extension Droplet {
         post("place", "new") { (request) -> ResponseRepresentable in
 
             guard let name = request.data["name"]?.string else {
-                self.log.info("Couldn't produce a name")
+                self.log.warning("Couldn't produce a name")
                 return Response(status: .badRequest)
             }
             
             guard let address = request.data["address"]?.string else {
-                self.log.info("Couldn't produce an address")
+                self.log.warning("Couldn't produce an address")
                 return Response(status: .badRequest)
             }
             
             guard let zipCode = request.data["zipCode"]?.int else {
-                self.log.info("Couldn't produce an zipCode")
+                self.log.warning("Couldn't produce an zipCode")
                 return Response(status: .badRequest)
             }
             
             guard let latitude = request.data["latitude"]?.double else {
-                self.log.info("Couldn't produce an latitude")
+                self.log.warning("Couldn't produce an latitude")
                 return Response(status: .badRequest)
             }
             
             guard let longitude = request.data["longitude"]?.double else {
-                self.log.info("Couldn't produce an longitude")
+                self.log.warning("Couldn't produce an longitude")
                 return Response(status: .badRequest)
                 
             }
