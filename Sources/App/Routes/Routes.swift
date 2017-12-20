@@ -15,7 +15,7 @@ extension Droplet {
                 var spotJSON = try $0.makeJSON()
                 let networks = try $0.networks().makeJSON()
                 spotJSON["networks"] = networks
-                jsonArray.append(placeJSON)
+                jsonArray.append(spotJSON)
             }
         
             try responseJSON.set("data", jsonArray)
@@ -33,7 +33,7 @@ extension Droplet {
                 return try Response(status: .badRequest, json: ["message": "Couldn't produce a spots. One of the variables was malformed"])
             }
             
-            let place = Spot(name: name, address: address, city: city, state: state, zipCode: zipCode, latitude: latitude, longitude: longitude)
+            let place = Spot(name: name, address: address, zipCode: zipCode, city: city, state: state, latitude: latitude, longitude: longitude)
             try place.save()
 
             if let networks = json["networks"]?.array {

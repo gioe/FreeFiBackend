@@ -90,9 +90,9 @@ extension Spot: JSONConvertible {
         try self.init(
             name: json.get("name"),
             address: json.get("address"),
+            zipCode: json.get("zipCode"),
             city: json.get("city"),
             state: json.get("state"),
-            zipCode: json.get("zipCode"),
             latitude: json.get("latitude"),
             longitude: json.get("longitude")
         )
