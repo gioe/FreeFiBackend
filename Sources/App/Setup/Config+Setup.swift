@@ -22,9 +22,9 @@ extension Config {
     /// Add all models that should have their
     /// schemas prepared before the app boots
     private func setupPreparations() throws {
-        preparations.append(Place.self)
+        preparations.append(Spot.self)
         preparations.append(Network.self)
-        preparations.append(Pivot<Place, Network>.self)
+        preparations.append(Pivot<Spot, Network>.self)
     }
     
 }

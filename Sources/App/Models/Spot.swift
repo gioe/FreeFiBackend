@@ -19,7 +19,7 @@ final class Spot: Model {
     let longitude: Double
     
     func networks() throws -> [Network] {
-        let networks: Siblings<Place, Network, Pivot<Place, Network>> = siblings()
+        let networks: Siblings<Spot, Network, Pivot<Spot, Network>> = siblings()
         return try networks.all()
     }
     
@@ -61,7 +61,7 @@ final class Spot: Model {
 }
 
 // MARK: Fluent Preparation
-extension Place: Preparation {
+extension Spot: Preparation {
     /// Prepares a table/collection in the database
     /// for storing Countries
     static func prepare(_ database: Database) throws {
@@ -85,7 +85,7 @@ extension Place: Preparation {
 
 // MARK: JSON
 // How the model converts from / to JSON.
-extension Place: JSONConvertible {
+extension Spot: JSONConvertible {
     convenience init(json: JSON) throws {
         try self.init(
             name: json.get("name"),
@@ -115,4 +115,4 @@ extension Place: JSONConvertible {
 // MARK: HTTP
 // This allows Post models to be returned
 // directly in route closures
-extension Place: ResponseRepresentable { }
+extension Spot: ResponseRepresentable { }
