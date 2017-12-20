@@ -3,34 +3,18 @@ import FluentProvider
 
 extension Droplet {
     func setupRoutes() throws {
-        get("hello") { req in
-            var json = JSON()
-            try json.set("hello", "world")
-            return json
-        }
-
-        get("plaintext") { req in
-            return "Hello, world!"
-        }
-
-        // response to requests to /info domain
-        // with a description of the request
-        get("info") { req in
-            return req.description
-        }
-       
         get("nearbyPlaces", Int.parameter) { request in
             let parameter = try request.parameters.next(Int.self)
 
-            let allPlaces = try Place.all().filter{ $0.zipCode == parameter }
+            let allSpots = try Spot.all().filter{ $0.zipCode == parameter }
            
             var responseJSON = JSON()
             var jsonArray: [JSON] = []
             
-            try allPlaces.forEach {
-                var placeJSON = try $0.makeJSON()
+            try allSpots.forEach {
+                var spotJSON = try $0.makeJSON()
                 let networks = try $0.networks().makeJSON()
-                placeJSON["networks"] = networks
+                spotJSON["networks"] = networks
                 jsonArray.append(placeJSON)
             }
         
@@ -45,11 +29,11 @@ extension Droplet {
                 return try Response(status: .badRequest, json: ["message": "Error creating JSON"])
             }
             
-            guard let name = json["name"]?.string, let address = json["address"]?.string, let zipCode = json["zipCode"]?.int, let latitude = json["latitude"]?.double, let longitude = json["longitude"]?.double else {
-                return try Response(status: .badRequest, json: ["message": "Couldn't produce a place. One of the variables was busted"])
+            guard let name = json["name"]?.string, let address = json["address"]?.string, let city = json["city"]?.string, let state = json["state"]?.string, let zipCode = json["zipCode"]?.int, let latitude = json["latitude"]?.double, let longitude = json["longitude"]?.double else {
+                return try Response(status: .badRequest, json: ["message": "Couldn't produce a spots. One of the variables was malformed"])
             }
             
-            let place = Place(name: name, address: address, zipCode: zipCode, latitude: latitude, longitude: longitude)
+            let place = Spot(name: name, address: address, city: city, state: state, zipCode: zipCode, latitude: latitude, longitude: longitude)
             try place.save()
 
             if let networks = json["networks"]?.array {
@@ -62,7 +46,7 @@ extension Droplet {
                     let network = Network(name: name, password: password)
                     try network.save()
 
-                    let networkPivot = try Pivot<Place, Network>(place, network)
+                    let networkPivot = try Pivot<Spot, Network>(place, network)
                     try networkPivot.save()
 
                     try place.save()

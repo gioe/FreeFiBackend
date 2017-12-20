@@ -1,5 +1,5 @@
 //
-//  Place.swift
+//  Spot.swift
 //  App
 //
 //  Created by Matt Gioe on 11/8/17.
@@ -8,10 +8,12 @@
 import Foundation
 import PostgreSQLProvider
 
-final class Place: Model {
+final class Spot: Model {
     let storage = Storage()
     let name: String
     let address: String
+    let city: String
+    let state: String
     let zipCode: Int
     let latitude: Double
     let longitude: Double
@@ -22,9 +24,11 @@ final class Place: Model {
     }
     
     /// Creates a new State
-    init(name: String, address: String, zipCode: Int, latitude: Double, longitude: Double) {
+    init(name: String, address: String, zipCode: Int, city: String, state: String, latitude: Double, longitude: Double) {
         self.name = name
         self.address = address
+        self.city = address
+        self.state = address
         self.zipCode = zipCode
         self.latitude = latitude
         self.longitude = longitude
@@ -35,6 +39,8 @@ final class Place: Model {
     init(row: Row) throws {
         name = try row.get("name")
         address = try row.get("address")
+        city = try row.get("city")
+        state = try row.get("state")
         zipCode = try row.get("zipCode")
         latitude = try row.get("latitude")
         longitude = try row.get("longitude")
@@ -44,6 +50,8 @@ final class Place: Model {
         var row = Row()
         try row.set("name", name)
         try row.set("address", address)
+        try row.set("city", city)
+        try row.set("state", state)
         try row.set("zipCode", zipCode)
         try row.set("latitude", latitude)
         try row.set("longitude", longitude)
@@ -61,6 +69,8 @@ extension Place: Preparation {
             builder.id()
             builder.string("name")
             builder.string("address")
+            builder.string("city")
+            builder.string("state")
             builder.int("zipCode")
             builder.double("latitude")
             builder.double("longitude")
@@ -80,6 +90,8 @@ extension Place: JSONConvertible {
         try self.init(
             name: json.get("name"),
             address: json.get("address"),
+            city: json.get("city"),
+            state: json.get("state"),
             zipCode: json.get("zipCode"),
             latitude: json.get("latitude"),
             longitude: json.get("longitude")
@@ -91,6 +103,8 @@ extension Place: JSONConvertible {
         try json.set("id", id)
         try json.set("name", name)
         try json.set("address", address)
+        try json.set("city", address)
+        try json.set("state", address)
         try json.set("zipCode", zipCode)
         try json.set("latitude", latitude)
         try json.set("longitude", longitude)
