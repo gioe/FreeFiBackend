@@ -27,8 +27,8 @@ final class Spot: Model {
     init(name: String, address: String, zipCode: Int, city: String, state: String, latitude: Double, longitude: Double) {
         self.name = name
         self.address = address
-        self.city = address
-        self.state = address
+        self.city = city
+        self.state = state
         self.zipCode = zipCode
         self.latitude = latitude
         self.longitude = longitude
