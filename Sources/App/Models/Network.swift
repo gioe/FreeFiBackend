@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import PostgreSQLProvider
+import MySQLProvider
 
 final class Network: Model {
     let storage = Storage()

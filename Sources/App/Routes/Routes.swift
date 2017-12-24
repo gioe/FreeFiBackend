@@ -2,7 +2,9 @@ import Vapor
 import FluentProvider
 
 extension Droplet {
+    
     func setupRoutes() throws {
+        
         get("nearbyPlaces", Int.parameter) { request in
             let parameter = try request.parameters.next(Int.self)
 
