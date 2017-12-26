@@ -40,6 +40,12 @@ extension Droplet {
             }
             
             let place = Spot(name: name, address: address, zipCode: zipCode, city: city, state: state, latitude: latitude, longitude: longitude)
+            
+            if let conflictingSpots = try? Spot.all().filter{ $0.latitude == place.latitude && $0.longitude == place.longitude }, !conflictingSpots.isEmpty {
+                return try Response(status: .badRequest, json: ["message": "This spot already exists."])
+
+            }
+            
             try place.save()
 
             if let networks = json["networks"]?.array {
