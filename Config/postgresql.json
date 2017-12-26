@@ -1,0 +1,7 @@
+{
+    "hostname": "127.0.0.1",
+    "user": "mattgioe",
+    "password": "",
+    "database": "freefi",
+    "port": 5432
+}
