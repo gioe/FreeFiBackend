@@ -60,7 +60,13 @@ extension Droplet {
                 return try Response(status: .badRequest, json: ["message": "Couldn't find a spot with this spot's id."])
             }
             
-            firstOption = place
+            firstOption.name = place.name
+            firstOption.address = place.address
+            firstOption.zipCode = place.zipCode
+            firstOption.city = place.city
+            firstOption.state = place.state
+            firstOption.latitude = place.latitude
+            firstOption.longitude = place.longitude
             try firstOption.save()
             
             if let networks = json["networks"]?.array {
@@ -78,7 +84,9 @@ extension Droplet {
                         return
                     }
                     
-                    firstOption = network
+                    firstOption.name = network.name
+                    firstOption.password = network.password
+
                     try firstOption.save()
                 }
             }

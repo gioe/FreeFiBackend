@@ -10,8 +10,8 @@ import PostgreSQLProvider
 
 final class Network: Model {
     let storage = Storage()
-    let name: String
-    let password: String
+    var name: String
+    var password: String
 
     init(name: String, password: String) {
         self.name = name

@@ -10,13 +10,13 @@ import PostgreSQLProvider
 
 final class Spot: Model {
     let storage = Storage()
-    let name: String
-    let address: String
-    let city: String
-    let state: String
-    let zipCode: Int
-    let latitude: Double
-    let longitude: Double
+    var name: String
+    var address: String
+    var city: String
+    var state: String
+    var zipCode: Int
+    var latitude: Double
+    var longitude: Double
     
     func networks() throws -> [Network] {
         let networks: Siblings<Spot, Network, Pivot<Spot, Network>> = siblings()
