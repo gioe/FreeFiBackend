@@ -13,7 +13,7 @@ extension Droplet {
         get("place", Int.parameter) { request in
             let parameter = try request.parameters.next(Int.self)
             let spotToUpdate = try Spot.all().filter{ $0.id == Identifier(parameter) }
-            
+
             guard !spotToUpdate.isEmpty, var firstOption = spotToUpdate.first else {
                 return try Response(status: .badRequest, json: ["message": "Couldn't find a spot with this spot's id."])
             }
@@ -62,6 +62,27 @@ extension Droplet {
             
             firstOption = place
             try firstOption.save()
+            
+            if let networks = json["networks"]?.array {
+                try networks.forEach {
+                    
+                    guard let id = $0["id"]?.int, let name = $0["name"]?.string, let password = $0["password"]?.string else {
+                        return
+                    }
+                    
+                    let network = Network(name: name, password: password)
+
+                    let networkToUpdate = try Network.all().filter{ $0.id == Identifier(id) }
+                    
+                    guard !networkToUpdate.isEmpty, var firstOption = networkToUpdate.first else {
+                        return
+                    }
+                    
+                    firstOption = network
+                    try firstOption.save()
+                }
+            }
+            
             return try Response(status: .accepted, json: ["message": "Success"])
         }
         
