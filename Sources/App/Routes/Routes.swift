@@ -56,18 +56,18 @@ extension Droplet {
 
             let spotToUpdate = try Spot.all().filter{ $0.id == Identifier(id) }
            
-            guard !spotToUpdate.isEmpty, var firstOption = spotToUpdate.first else {
+            guard !spotToUpdate.isEmpty, var firstSpot = spotToUpdate.first else {
                 return try Response(status: .badRequest, json: ["message": "Couldn't find a spot with this spot's id."])
             }
             
-            firstOption.name = place.name
-            firstOption.address = place.address
-            firstOption.zipCode = place.zipCode
-            firstOption.city = place.city
-            firstOption.state = place.state
-            firstOption.latitude = place.latitude
-            firstOption.longitude = place.longitude
-            try firstOption.save()
+            firstSpot.name = place.name
+            firstSpot.address = place.address
+            firstSpot.zipCode = place.zipCode
+            firstSpot.city = place.city
+            firstSpot.state = place.state
+            firstSpot.latitude = place.latitude
+            firstSpot.longitude = place.longitude
+            try firstSpot.save()
             
             if let networks = json["networks"]?.array {
                 try networks.forEach {
@@ -80,14 +80,18 @@ extension Droplet {
 
                     let networkToUpdate = try Network.all().filter{ $0.id == Identifier(id) }
                     
-                    guard !networkToUpdate.isEmpty, var firstOption = networkToUpdate.first else {
+                    guard !networkToUpdate.isEmpty, var firstNetwork = networkToUpdate.first else {
+                        let networkPivot = try Pivot<Spot, Network>(firstSpot, network)
+                        try networkPivot.save()
+                        
+                        try network.save()
                         return
                     }
                     
-                    firstOption.name = network.name
-                    firstOption.password = network.password
+                    firstNetwork.name = network.name
+                    firstNetwork.password = network.password
 
-                    try firstOption.save()
+                    try firstNetwork.save()
                 }
             }
             
