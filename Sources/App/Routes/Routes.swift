@@ -81,10 +81,11 @@ extension Droplet {
                     let networkToUpdate = try Network.all().filter{ $0.id == Identifier(id) }
                     
                     guard !networkToUpdate.isEmpty, var firstNetwork = networkToUpdate.first else {
+                        try network.save()
+
                         let networkPivot = try Pivot<Spot, Network>(firstSpot, network)
                         try networkPivot.save()
-                        
-                        try network.save()
+        
                         return
                     }
                     
