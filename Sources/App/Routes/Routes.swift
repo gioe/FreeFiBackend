@@ -33,8 +33,8 @@ extension Droplet {
             
             try allSpots.forEach {
                 var spotJSON = try $0.makeJSON()
-                let networks = try $0.networks().makeJSON()
-                spotJSON["networks"] = networks
+//                let networks = try $0.networks().makeJSON()
+//                spotJSON["networks"] = networks
                 jsonArray.append(spotJSON)
             }
         
@@ -69,32 +69,32 @@ extension Droplet {
             firstSpot.longitude = place.longitude
             try firstSpot.save()
             
-            if let networks = json["networks"]?.array {
-                try networks.forEach {
-                    
-                    guard let id = $0["id"]?.int, let name = $0["name"]?.string, let password = $0["password"]?.string else {
-                        return
-                    }
-                    
-                    let network = Network(name: name, password: password)
-
-                    let networkToUpdate = try Network.all().filter{ $0.id == Identifier(id) }
-                    
-                    guard !networkToUpdate.isEmpty, var firstNetwork = networkToUpdate.first else {
-                        try network.save()
-
-                        let networkPivot = try Pivot<Spot, Network>(firstSpot, network)
-                        try networkPivot.save()
-        
-                        return
-                    }
-                    
-                    firstNetwork.name = network.name
-                    firstNetwork.password = network.password
-
-                    try firstNetwork.save()
-                }
-            }
+//            if let networks = json["networks"]?.array {
+//                try networks.forEach {
+//
+//                    guard let id = $0["id"]?.int, let name = $0["name"]?.string, let password = $0["password"]?.string else {
+//                        return
+//                    }
+//
+//                    let network = Network(name: name, password: password)
+//
+//                    let networkToUpdate = try Network.all().filter{ $0.id == Identifier(id) }
+//
+//                    guard !networkToUpdate.isEmpty, var firstNetwork = networkToUpdate.first else {
+//                        try network.save()
+//
+//                        let networkPivot = try Pivot<Spot, Network>(firstSpot, network)
+//                        try networkPivot.save()
+//
+//                        return
+//                    }
+//
+//                    firstNetwork.name = network.name
+//                    firstNetwork.password = network.password
+//
+//                    try firstNetwork.save()
+//                }
+//            }
             
             return try Response(status: .accepted, json: ["message": "Success"])
         }
@@ -118,23 +118,23 @@ extension Droplet {
             
             try place.save()
 
-            if let networks = json["networks"]?.array {
-                try networks.forEach {
-
-                    guard let name = $0["name"]?.string, let password = $0["password"]?.string else {
-                        return
-                    }
-
-                    let network = Network(name: name, password: password)
-                    try network.save()
-
-                    let networkPivot = try Pivot<Spot, Network>(place, network)
-                    try networkPivot.save()
-
-                    try place.save()
-
-                }
-            }
+//            if let networks = json["networks"]?.array {
+//                try networks.forEach {
+//
+//                    guard let name = $0["name"]?.string, let password = $0["password"]?.string else {
+//                        return
+//                    }
+//
+//                    let network = Network(name: name, password: password)
+//                    try network.save()
+//
+//                    let networkPivot = try Pivot<Spot, Network>(place, network)
+//                    try networkPivot.save()
+//
+//                    try place.save()
+//
+//                }
+//            }
             return try Response(status: .accepted, json: ["message": "Success"])
         }
     }
